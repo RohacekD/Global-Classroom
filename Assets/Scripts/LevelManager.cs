@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour {
 
@@ -54,8 +54,14 @@ public class LevelManager : MonoBehaviour {
 
     public void playSinglePlayer()
     {
-        EditorUtility.DisplayDialog("Missing scene on GIT", "Once we have scene to load place here", "OK");
+        //EditorUtility.DisplayDialog("Missing scene on GIT", "Once we have scene to load place here", "OK");
         //Application.LoadLevel("Scene");
+    }
+
+    public void playMultiPlayer()
+    {
+        //EditorUtility.DisplayDialog("Missing scene on GIT", "Once we have scene to load place here", "OK");
+        SceneManager.LoadScene("Multiplayer");
     }
 
     public void QuitGame()
