@@ -36,6 +36,7 @@ public class PlaneController : MonoBehaviour {
 
     void Update () {
         //Get current position
+
         Vector3 currentPos = transform.position;
 
         KeyboardInput();
