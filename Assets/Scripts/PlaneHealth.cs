@@ -1,3 +1,4 @@
+﻿
 ﻿/* 
  * 23.04.17
  BY MICHEAL AND CARELE 
@@ -10,6 +11,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 
 public class PlaneHealth : MonoBehaviour {
@@ -31,8 +33,10 @@ public class PlaneHealth : MonoBehaviour {
     AudioSource playerAudio;                          // Reference to the AudioSource component.
 
 
+
     private void OnEnable()
     {
+
       
         // Update the health slider's value and color.
 
