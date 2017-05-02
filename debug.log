@@ -4,3 +4,6 @@
 [0407/184702.277:ERROR:crash_report_database_win.cc(563)] CreateDirectory C:\Program Files (x86)\Footper\: Pøístup byl odepøen. (0x5)
 [0407/184702.281:ERROR:registration_protocol_win.cc(83)] TransactNamedPipe: Pøesmìrování bylo ukonèeno. (0x6D)
 [0407/184702.282:ERROR:crash_report_database_win.cc(563)] CreateDirectory C:\Program Files (x86)\Footper\: Pøístup byl odepøen. (0x5)
+[0422/152205.084:ERROR:crash_report_database_win.cc(563)] CreateDirectory C:\Program Files (x86)\Footper\: Pøístup byl odepøen. (0x5)
+[0422/152205.088:ERROR:registration_protocol_win.cc(83)] TransactNamedPipe: Pøesmìrování bylo ukonèeno. (0x6D)
+[0422/152205.089:ERROR:crash_report_database_win.cc(563)] CreateDirectory C:\Program Files (x86)\Footper\: Pøístup byl odepøen. (0x5)
