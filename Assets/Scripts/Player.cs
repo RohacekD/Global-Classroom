@@ -8,14 +8,9 @@ public class Player : MonoBehaviour {
     public float actualHealth { get; set; }
     public float maxHealth { get; set; }
     public string playerName;
+    public WeaponManager weaponManager;
     public int score { get; set; }
-    public int bombs {
-        get { return bombs; }
-        set {
-            bombs = value;
-            updateBombsText();
-        }
-    }
+    public int bombs { get; set; }
 
     public Slider healthBar;
     public Text scoreDisplay;
@@ -30,7 +25,10 @@ public class Player : MonoBehaviour {
         healthBar.value = calcHealth();
         scoreDisplay.text = score.ToString();
         nameDisplay.text = playerName;
-	}
+        bombs = weaponManager.bombAmount;
+        updateBombsText();
+
+    }
 
     private void updateBombsText()
     {
@@ -48,6 +46,8 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         scoreDisplay.text = score.ToString();
+        bombs = weaponManager.bombAmount;
+        updateBombsText();
     }
 
     void addScore(int value)
