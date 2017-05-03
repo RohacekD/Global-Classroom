@@ -26,6 +26,7 @@ public class PlaneHealth : MonoBehaviour {
     PlaneController planeController;                  // Reference to the player's movement.
     WeaponManager weaponManager;                      // Reference to the Plane Shooting script.
 
+
     bool isDead;                                      // Whether the player is dead.
     bool damaged;                                     // True when the player gets damaged.
 
@@ -54,16 +55,20 @@ public class PlaneHealth : MonoBehaviour {
         isDead = false;
     }
 
-    public void TakeDamage(int amount)
+    public void Update() //TakeDamage(int amount)
     {
         // Set the damaged flag so the screen will flash.
         damaged = true;
 
         // Reduce the current health by the damage amount.
-        currentHealth -= amount;
+        //currentHealth -= amount;
+
+        currentHealth -= (Time.deltaTime*5);//test code remove
 
         // Set the health bar's value to the current health.
         healthSlider.value = currentHealth;
+
+        SetHealthUI();//test code remove
 
         // Play the hurt sound effect.
         //playerAudio.Play ();
