@@ -25,15 +25,12 @@ public class WeaponManager : MonoBehaviour {
     //Variable that is added every frame and compared to fireDelta
     private float shootingDelay = 0.0f;
 
-  
-    // Use this for initialization
     void Start () {
         bullets = maxBullets;
         reloadCounter = reloadTime;
         bombAmount = maxBombs;
     }
 	
-	// Update is called once per frame
 	void Update () {
 
         shootingDelay += Time.deltaTime;
@@ -85,8 +82,8 @@ public class WeaponManager : MonoBehaviour {
             bombAmount--;
             GameObject bomb = (GameObject)Instantiate(bombPrefab, bombPosition.transform.position, bombPosition.transform.rotation);
             bomb.GetComponent<Bomb>().movementSpeed = GetComponentInParent<PlaneController>().movementSpeed;
+            Destroy(bomb, 15.0f);
         }
-
     }
     
     public void AddBombs()

@@ -7,6 +7,8 @@
   - Refill fuel while being on platform 
  */
 
+
+ //UI FUNCTIONS COMMENTED FOR TESTING
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,17 +18,18 @@ using UnityEngine.UI;
 
 public class PlaneHealth : MonoBehaviour {
 
-    public float startingHealth = 100f;               // The amount of health each plane starts with.
+    public int startingHealth = 100;                    // The amount of health each plane starts with.
     public Slider healthSlider;                       // The slider to represent how much health the plane currently has.
     public Image fillImage;                           // The image component of the slider.
     public Color fullHealthColor = Color.green;       // The color the health bar will be when on full health.
     public Color zeroHealthColor = Color.red;         // The color the health bar will be when on no health.    
-    private float currentHealth;                      // How much health the plane currently has.
+    //public for testing. change to private later
+    public int currentHealth;                          // How much health the plane currently has.
 
     PlaneController planeController;                  // Reference to the player's movement.
     WeaponManager weaponManager;                      // Reference to the Plane Shooting script.
 
-    bool isDead;                                      // Whether the player is dead.
+    public bool isDead;                                      // Whether the player is dead.
     bool damaged;                                     // True when the player gets damaged.
 
     public AudioClip deathClip;                       // The audio clip to play when the player dies.
@@ -40,7 +43,7 @@ public class PlaneHealth : MonoBehaviour {
       
         // Update the health slider's value and color.
 
-        SetHealthUI();
+       // SetHealthUI();
    
         // Setting up the references.
        // anim = GetComponent<Animator>();
@@ -63,7 +66,7 @@ public class PlaneHealth : MonoBehaviour {
         currentHealth -= amount;
 
         // Set the health bar's value to the current health.
-        healthSlider.value = currentHealth;
+      //  healthSlider.value = currentHealth;
 
         // Play the hurt sound effect.
         //playerAudio.Play ();
@@ -77,19 +80,30 @@ public class PlaneHealth : MonoBehaviour {
 
     }
 
-    private void SetHealthUI()
+    //Add health to the plane. Repairing speed calculated in Base.cs
+    public void Repair()
+    {
+        if(currentHealth < startingHealth)
+        {
+            currentHealth++;
+        }
+    }
+
+  /*  private void SetHealthUI()
     {
         // Set the slider's value appropriately.
         healthSlider.value = currentHealth;
 
         // Interpolate the color of the bar between the choosen colours based on the current percentage of the starting health.
         fillImage.color = Color.Lerp(zeroHealthColor, fullHealthColor, currentHealth / startingHealth);
-    }
+    }*/
 
-    void Death()
+    public void Death()
     {
         // Set the death flag so this function won't be called again.
         isDead = true;
+
+        Debug.Log(gameObject + "dead");
 
         /*Turn off any remaining shooting effects.
         weaponManager.DisableEffects();
@@ -103,10 +117,30 @@ public class PlaneHealth : MonoBehaviour {
         */
 
         // Turn off the movement and shooting scripts of the airplane 
+        //Better to just destroy the object and make a explosion effect
 
-        planeController.enabled = false;
-        weaponManager.enabled = false;
+        Destroy(gameObject);
 
+        //planeController.enabled = false;
+        //weaponManager.enabled = false;
+
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //If colliding with other player
+        if(collision.gameObject.tag == "Player")
+        {
+            //Destroy enemy
+            var enemyHealth = collision.gameObject.GetComponent<PlaneHealth>();
+            if (enemyHealth != null)
+            {
+                enemyHealth.Death();
+            }
+
+            //Destroy yourself
+            Death();
+        }
     }
 
 }

@@ -23,17 +23,18 @@ public class Bomb : MonoBehaviour {
         var hit = other.gameObject;
 
         //two bombs can't collide
-        if (hit.tag == "bomb") return;
+        if (hit.tag == "Bomb" ||
+            hit.tag == "Base") return;
 
-        /*
-        var health = other.GetComponent<Health>();
+        
+        var health = other.GetComponent<PlaneHealth>();
 
         if (health != null)
         {
-            health.Kill();
+            health.Death();
         }
-        */
-        Debug.Log("HIT: " + hit);
+        
+        Debug.Log("BOMB HIT: " + hit);
         Destroy(gameObject);
     }
     

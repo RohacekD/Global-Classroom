@@ -3,9 +3,10 @@
 //11.04.2017
 //
 //TODO:
-// - Add torque to turning (optional)
+// 
 // - Networking
-//
+// - Player gains a lot of speed when in base and flying towards the ground
+//      -> possible fix is to not to let plane rotate towards ground when inside base
 
 using System.Collections;
 using System.Collections.Generic;
@@ -28,6 +29,9 @@ public class PlaneController : MonoBehaviour {
     public float dropSpeed = 5; //The speed that the plane will start dropping at
     private float dropGravityCalculation = 0; //This uses gravity
     private bool dropping = false;
+
+    public bool playerIsInBase;
+    private Vector3 aboveGround;
 
     // Use this for initialization
     void Start () {
@@ -87,6 +91,13 @@ public class PlaneController : MonoBehaviour {
                 dropping = false;
             }
         }
+
+        //Keep player slighty above the ground when in base
+        if (playerIsInBase && currentPos.y < aboveGround.y)
+        {
+            currentPos.y = aboveGround.y;
+        }
+
         transform.position = currentPos;
     }
 
@@ -178,6 +189,27 @@ public class PlaneController : MonoBehaviour {
                     movementSpeed -= addEnginePower * Time.deltaTime;
                 }
             }
+        }
+    }
+
+    //Called when player enters or exits base trigger
+    public void SetBaseData(bool inBase, Transform baseTriggerSize)
+    {
+        playerIsInBase = inBase;
+        if (baseTriggerSize != null)
+        {
+            //Get the size of base trigger, divide it by 2 and decrease it from the size -> you get the bottom lever of the collider
+            //+2.5 so player will stay lighty above groung
+            //-> player's center +2.5 looks like player is on ground
+            Vector3 position = baseTriggerSize.position;
+            Vector3 size = baseTriggerSize.localScale;
+            Debug.Log(position);
+            Debug.Log(size);
+            position.y -= size.y / 2;
+            position.y += 2.5f;
+            aboveGround = position;
+            //baseTransform = baseTriggerSize;
+            //baseTransform.position -= baseTriggerSize.localScale / 2;
         }
     }
 }
