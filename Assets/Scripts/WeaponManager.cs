@@ -12,7 +12,8 @@ public class WeaponManager : MonoBehaviour {
     public GameObject bombPosition;
     public GameObject gunPosition;
 
-    public int bombAmount = 10;
+    public int bombAmount;
+    public int maxBombs = 10;
     private int bullets;
     public int maxBullets = 20;
     private bool reloading;
@@ -29,7 +30,8 @@ public class WeaponManager : MonoBehaviour {
     void Start () {
         bullets = maxBullets;
         reloadCounter = reloadTime;
-	}
+        bombAmount = maxBombs;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -52,8 +54,6 @@ public class WeaponManager : MonoBehaviour {
         {
             reloading = true;
             reloadCounter -= Time.deltaTime;
-
-            Debug.Log(reloadCounter);
 
             if (reloadCounter <= 0)
             {
@@ -91,7 +91,10 @@ public class WeaponManager : MonoBehaviour {
     
     public void AddBombs()
     {
-
+        if (bombAmount < maxBombs)
+        {
+            bombAmount++;
+        }
     }
 
     public void DisableEffects()
