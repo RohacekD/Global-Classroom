@@ -11,8 +11,8 @@ public class Bullet : MonoBehaviour
     public float movementSpeed = 200.0f;
 
     private int damage;
-    public int minDamage = 6;
-    public int maxDamage = 10;
+    public int minDamage = 20;
+    public int maxDamage = 30;
 
     // Use this for initialization
     void Start()

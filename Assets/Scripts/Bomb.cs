@@ -33,9 +33,12 @@ public class Bomb : MonoBehaviour {
         {
             health.Death();
         }
+
+        if (hit.tag != "Base")
+        {
+            Destroy(gameObject);
+        }
         
-        Debug.Log("BOMB HIT: " + hit);
-        Destroy(gameObject);
     }
     
 }

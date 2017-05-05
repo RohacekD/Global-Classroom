@@ -5,8 +5,6 @@
 //TODO:
 // 
 // - Networking
-// - Player gains a lot of speed when in base and flying towards the ground
-//      -> possible fix is to not to let plane rotate towards ground when inside base
 
 using System.Collections;
 using System.Collections.Generic;
@@ -30,8 +28,8 @@ public class PlaneController : MonoBehaviour {
     private float dropGravityCalculation = 0; //This uses gravity
     private bool dropping = false;
 
-    public bool playerIsInBase;
-    private Vector3 aboveGround;
+    private bool playerIsInBase;    //Used to check if player is in the base
+    private Vector3 aboveGround;    //Used to keep player slightly above the groung when inside base
 
     // Use this for initialization
     void Start () {
@@ -57,10 +55,14 @@ public class PlaneController : MonoBehaviour {
         //Returns gravity value ( between -9,8 and 9,8 )
         float customGravity = CalculateGravity();
 
-        //Add gravity to current speed.
-        movementSpeed += customGravity;
+        //Disable gravity inside base
+        if (!playerIsInBase)
+        {
+            //Add gravity to current speed.
+            movementSpeed += customGravity;
+        }
 
-        if (movementSpeed < dropSpeed)
+        if (movementSpeed < dropSpeed && !playerIsInBase)
         {
             dropping = true;
         }
@@ -76,6 +78,12 @@ public class PlaneController : MonoBehaviour {
         // Plane drops down
         else
         {
+            if (playerIsInBase)
+            {
+                dropping = false;
+                movementSpeed = 0;
+                return;
+            }
             //
             //TODO: Should add dropping speed to Z-axis, can't figure out how to get the right direction
             //
@@ -165,8 +173,8 @@ public class PlaneController : MonoBehaviour {
             {
                 if (movementSpeed > 0)
                 {
-                    enginePower -= addEnginePower * Time.deltaTime;
-                    movementSpeed -= addEnginePower * Time.deltaTime;
+                    enginePower -= addEnginePower * 1.5f * Time.deltaTime;
+                    movementSpeed -= addEnginePower * 1.5f * Time.deltaTime;
                 }
             }
         }
@@ -185,8 +193,8 @@ public class PlaneController : MonoBehaviour {
             {
                 if (movementSpeed > 0)
                 {
-                    enginePower -= addEnginePower * Time.deltaTime;
-                    movementSpeed -= addEnginePower * Time.deltaTime;
+                    enginePower -= addEnginePower * 1.5f * Time.deltaTime;
+                    movementSpeed -= addEnginePower * 1.5f * Time.deltaTime;
                 }
             }
         }
@@ -203,13 +211,9 @@ public class PlaneController : MonoBehaviour {
             //-> player's center +2.5 looks like player is on ground
             Vector3 position = baseTriggerSize.position;
             Vector3 size = baseTriggerSize.localScale;
-            Debug.Log(position);
-            Debug.Log(size);
             position.y -= size.y / 2;
             position.y += 2.5f;
             aboveGround = position;
-            //baseTransform = baseTriggerSize;
-            //baseTransform.position -= baseTriggerSize.localScale / 2;
         }
     }
 }

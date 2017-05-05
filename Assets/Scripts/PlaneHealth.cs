@@ -129,7 +129,7 @@ public class PlaneHealth : MonoBehaviour {
     private void OnCollisionEnter(Collision collision)
     {
         //If colliding with other player
-        if(collision.gameObject.tag == "Player")
+        if(collision.gameObject.tag == "Player" || collision.gameObject.tag == "Ground")
         {
             //Destroy enemy
             var enemyHealth = collision.gameObject.GetComponent<PlaneHealth>();

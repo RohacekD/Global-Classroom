@@ -1,12 +1,4 @@
 ﻿//By Samuli Jylhä and Hyowon Woo
-//
-//TODO:
-//
-//Figure out how to land a plane without getting transform fucked by rigidbody physics
-//-> maybe keep the transform slightly above ground (transoform.position.y = asdasd);
-//-> and/or remove collider from base and do something else
-//
-
 
 using System.Collections;
 using System.Collections.Generic;
@@ -70,7 +62,6 @@ public class Base : MonoBehaviour {
     //Entering and exiting this collider set player inside or outside the base
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject + " ENTER");
         if (other.tag == "Player")
         {
             player = other.gameObject;
@@ -83,7 +74,6 @@ public class Base : MonoBehaviour {
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log(other.gameObject + " EXIT");
         if (other.tag == "Player")
         {
             playerIsInBase = false;
