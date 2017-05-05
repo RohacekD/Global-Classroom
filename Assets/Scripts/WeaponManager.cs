@@ -93,4 +93,9 @@ public class WeaponManager : MonoBehaviour {
     {
 
     }
+
+    public void DisableEffects()
+    {
+        //Disable the effects while dropping boombs or shooting (sound and light)
+    }
 }

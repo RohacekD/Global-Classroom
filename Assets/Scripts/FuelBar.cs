@@ -12,8 +12,8 @@ public class FuelBar : MonoBehaviour
     private float m_CurrentFuel;                      // How much fuel the plane currently has.
     public Color m_FuelBarColor = Color.blue;           // The color for the fuel bar
     private bool m_Dead;                                // Has the plane been reduced beyond zero health yet?
+    public GameObject player;
 
-    
 
 
     private void OnEnable()
@@ -21,6 +21,7 @@ public class FuelBar : MonoBehaviour
         // When the plane is enabled, reset the plane's fuel and whether or not it's dead.
         m_CurrentFuel = m_StartingFuel;
         m_Dead = false;
+        player = GameObject.Find("FixRotation");
 
         // Update the fuel slider's value and color.
         SetFuelUI();
@@ -29,7 +30,7 @@ public class FuelBar : MonoBehaviour
     public void Update()
     {
         // Reduce current fuel by the amount of damage done.
-        m_CurrentFuel -= (Time.deltaTime * 5);
+       // m_CurrentFuel -= (Time.deltaTime * 5);
 
         // Change the UI elements appropriately.
         SetFuelUI();
@@ -63,7 +64,7 @@ public class FuelBar : MonoBehaviour
         // Set the flag so that this function is only called once.
         m_Dead = true;
 
-        gameObject.SetActive(false);
+        player.gameObject.SetActive(false);
     }
 
 }
