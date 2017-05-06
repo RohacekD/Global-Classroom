@@ -1,4 +1,3 @@
-﻿
 ﻿/* 
  * 23.04.17
  BY MICHEAL AND CARELE 
@@ -11,7 +10,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 
 
 public class PlaneHealth : MonoBehaviour {
@@ -36,9 +34,7 @@ public class PlaneHealth : MonoBehaviour {
 
 
     private void OnEnable()
-    {
-
-      
+    { 
         // Update the health slider's value and color.
 
         SetHealthUI();
@@ -111,8 +107,6 @@ public class PlaneHealth : MonoBehaviour {
 
         planeController.enabled = false;
         weaponManager.enabled = false;
-
     }
 
 }
-

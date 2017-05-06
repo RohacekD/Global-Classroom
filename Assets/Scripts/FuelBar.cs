@@ -15,7 +15,6 @@ public class FuelBar : MonoBehaviour
     public GameObject player;
 
 
-
     private void OnEnable()
     {
         // When the plane is enabled, reset the plane's fuel and whether or not it's dead.
@@ -62,8 +61,7 @@ public class FuelBar : MonoBehaviour
     private void OnDeath()
     {
         // Set the flag so that this function is only called once.
-        m_Dead = true;
-
+        m_Dead = true;        
         player.gameObject.SetActive(false);
     }
 
