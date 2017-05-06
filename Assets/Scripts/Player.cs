@@ -39,7 +39,7 @@ public class Player : MonoBehaviour {
         }
         else
         {
-            playerBombs.color = new Color(50.0f / 255.0f, 50.0f / 255.0f, 50.0f / 255.0f, 1f);
+            playerBombs.color = new Color(255f,255f,255f,255f);
         }
     }
 	
