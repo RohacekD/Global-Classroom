@@ -8,12 +8,23 @@ using UnityEngine;
 public class Bomb : MonoBehaviour {
 
     public float movementSpeed;
-	
-	void Update () {
+
+    //the player that drops the bomb
+    bool player1;
+    bool player2;
+
+    void Update () {
 
         Vector3 currentPos = transform.position;
         currentPos += transform.forward * movementSpeed * Time.deltaTime;
         transform.position = currentPos;
+    }
+
+    //Set the player that drops the bomb
+    public void Shooter(bool one, bool two)
+    {
+        player1 = one;
+        player2 = two;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -28,6 +39,7 @@ public class Bomb : MonoBehaviour {
 
         if (health != null)
         {
+            health.BombKill(player1, player2);
             health.Death();
         }
 
