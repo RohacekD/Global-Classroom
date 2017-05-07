@@ -1,12 +1,14 @@
 fileFormatVersion: 2
-
 guid: fd5c8468feff54f4c9ff15e5de252ae7
-timeCreated: 1493012878
-
+timeCreated: 1494156107
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - healthSlider: {instanceID: 0}
+  - fillImage: {instanceID: 0}
+  - ExplosionPrefab: {instanceID: 0}
+  - plane: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
