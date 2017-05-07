@@ -32,8 +32,6 @@ public class PlaneHealth : MonoBehaviour {
     public GameObject ExplosionPrefab;                // prefab that is instanstiated when the plane dies
     private AudioSource ExplosionAudio;               // Audio for plane explosion
     private ParticleSystem ExplosionParticles;        // The particle system tfor plane explosion
-    public GameObject plane;
-
 
     public bool isDead;                               // Whether the player is dead.
     bool damaged;                                     // True when the player gets damaged.
@@ -44,8 +42,8 @@ public class PlaneHealth : MonoBehaviour {
     public float respawnTimer;                        // Used to calculate remaining time to respawn
     public float respawnDelay = 5;                    // Set the time for respawn
 
-    GameObject spawnPoint1;
-    GameObject spawnPoint2;
+    GameObject spawnPoint1;                         //Spawn point for player 1
+    GameObject spawnPoint2;                         //Spawn point for player 2
 
     public int lives = 5;                             //How many lives player has
 
@@ -57,7 +55,6 @@ public class PlaneHealth : MonoBehaviour {
         //Spawnpoint for player 1 and 2
         spawnPoint1 = GameObject.Find("Spawnpoint1");
         spawnPoint2 = GameObject.Find("Spawnpoint2");
-        plane = GameObject.Find("Player 1");
 
         // Setting up the references.
         // playerAudio = GetComponent<AudioSource>();
@@ -84,9 +81,11 @@ public class PlaneHealth : MonoBehaviour {
         // Update the health slider's value and color.
         SetHealthUI();
 
+        //Respawning
         if (isDead)
         {
             respawnTimer -= Time.deltaTime;
+
             if (respawnTimer <= 0)
             {
                 isDead = false;
@@ -109,9 +108,6 @@ public class PlaneHealth : MonoBehaviour {
 
         // Reduce the current health by the damage amount.
         currentHealth -= amount;
-
-        // Set the health bar's value to the current health.
-        //healthSlider.value = currentHealth;
 
         // Play the hurt sound effect.
         //playerAudio.Play ();
@@ -163,6 +159,7 @@ public class PlaneHealth : MonoBehaviour {
     {
         if (isDead)
             return;
+
         // Set the death flag so this function won't be called again.
         isDead = true;
 
@@ -171,14 +168,13 @@ public class PlaneHealth : MonoBehaviour {
 
         //plane explosion
         // Move the instantiated explosion prefab to the plane's position and turn it on.
-        ExplosionParticles.transform.position = plane.transform.position;
+        ExplosionParticles.transform.position = gameObject.transform.position;
         ExplosionParticles.gameObject.SetActive(true);
         // Play the particle system ofor the plane explosion
         ExplosionParticles.Play();
         // Play the audio.
         ExplosionAudio.Play();
-
-        
+    
         /* 
          * Set the audiosource to play the death clip and play it (this will stop the hurt sound from playing).
         playerAudio.clip = deathClip;
@@ -202,6 +198,7 @@ public class PlaneHealth : MonoBehaviour {
     {
         // if (isLocalPlayer)
         //{
+
         // Disable physic effects so plane will respawn correctly
         GetComponent<Rigidbody>().isKinematic = true;
 
@@ -210,14 +207,12 @@ public class PlaneHealth : MonoBehaviour {
         {
             transform.rotation = spawnPoint1.transform.rotation;
             transform.position = spawnPoint1.transform.position;
-
         }
         else
         {
             transform.rotation = spawnPoint2.transform.rotation;
             transform.position = spawnPoint2.transform.position;
         }
-
 
         //reset explosion to false again
         ExplosionParticles.gameObject.SetActive(false);
