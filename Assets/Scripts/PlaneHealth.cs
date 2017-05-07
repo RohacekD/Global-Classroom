@@ -203,6 +203,7 @@ public class PlaneHealth : MonoBehaviour {
         GetComponent<Rigidbody>().isKinematic = false;
         weaponManager.enabled = true;
         weaponManager.bullets = weaponManager.maxBullets;
+        weaponManager.bombAmount = weaponManager.maxBombs;
         weaponManager.reloading = false;
 
         //Reset health and fuel when respawning
@@ -241,6 +242,9 @@ public class PlaneHealth : MonoBehaviour {
     //Suicide removes some score
     void Suicide(int subScore)
     {
+        if (isDead)
+            return;
+
         if (player1)
             scoreManager.SubScoreP1(subScore);
 
@@ -251,6 +255,9 @@ public class PlaneHealth : MonoBehaviour {
     //Parameters are the player that dropped the bomb. Player one or Player two
     public void BombKill(bool one, bool two)
     {
+        if (isDead)
+            return;
+
         //Bomb dropped by player 1
         if (one)
         {

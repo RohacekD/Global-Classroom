@@ -18,15 +18,17 @@ public class WeaponManager : MonoBehaviour
     public int bombAmount;
     public int maxBombs = 10;
     public int bullets;
-    public int maxBullets = 20;
+    public int maxBullets = 40;
     public bool reloading;
     public float reloadTime = 4.0f;
     private float reloadCounter;
 
     //Delay between bullets when fire button is pressed down
-    public float fireDelta = 0.1f;
+    public float fireDelta = 0.06f;
     //Variable that is added every frame and compared to fireDelta
     private float shootingDelay = 0.0f;
+    //Adding spray to the bullets
+    public float maxDivergence = 5.0f;
 
     void Start()
     {
@@ -75,12 +77,23 @@ public class WeaponManager : MonoBehaviour
         {
             return;
         }
-
+        //
+        //http://answers.unity3d.com/questions/36801/spraying-bullets.html
+        // start with a perfect shot
+        Vector3 divergence = Vector3.zero;
+        // then we want to randomize the rotation around the X axis
+        divergence.x = (1 - 2 * Random.value) * maxDivergence;
+        /* Random.value only gives you a positive float between 0 and 1
+         * (1 - 2 * Random.value) makes that between -1 and 1
+         */
+        // instantiate the bullet
         GameObject bullet = (GameObject)Instantiate(bulletPrefab, gunPosition.transform.position, gunPosition.transform.rotation);
+        bullet.transform.Rotate(divergence);
 
         bullets--;
 
         Destroy(bullet, 6.0f);
+
     }
 
     private void DropBomb()
