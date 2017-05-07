@@ -12,6 +12,9 @@ using UnityEngine;
 
 public class PlaneController : MonoBehaviour {
 
+    bool player1;
+    bool player2;
+
     public float enginePower = 0;
     public float maxEnginePower = 100.0f;
     public float addEnginePower = 9.0f; //How much plane should accelerate per second.
@@ -20,8 +23,8 @@ public class PlaneController : MonoBehaviour {
     private float angle; //Angle compared to the ground (world axis).
 
     //Variables for the direction the plane is facing
-    private bool left = false;
-    private bool right = true;
+    public bool left;
+    public bool right;
 
     //Variables that are used when plane flies too slowly, and it will drop towards the ground.
     public float dropSpeed = 5; //The speed that the plane will start dropping at
@@ -30,6 +33,28 @@ public class PlaneController : MonoBehaviour {
 
     private bool playerIsInBase;    //Used to check if player is in the base
     private Vector3 aboveGround;    //Used to keep player slightly above the groung when inside base
+
+    private void Start()
+    {
+        player1 = GetComponent<Player>().player1;
+        player2 = GetComponent<Player>().player2;
+
+        SetDirections();
+    }
+
+    public void SetDirections()
+    {
+        if (player1)
+        {
+            right = true;
+            left = false;
+        }
+        if (player2)
+        {
+            right = false;
+            left = true;
+        }
+    }
 
     void Update () {
         //Get current position

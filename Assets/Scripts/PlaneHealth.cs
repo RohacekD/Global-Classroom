@@ -13,6 +13,9 @@ using UnityEngine.UI;
 
 public class PlaneHealth : MonoBehaviour {
 
+    bool player1;
+    bool player2;
+
     public int startingHealth = 100;                  // The amount of health each plane starts with.
     private int currentHealth;                         // How much health the plane currently has.
 
@@ -24,10 +27,13 @@ public class PlaneHealth : MonoBehaviour {
     PlaneController planeController;                  // Reference to the player's movement.
     WeaponManager weaponManager;                      // Reference to the Plane Shooting script.
 
+    ScoreManager scoreManager;
+
     public GameObject ExplosionPrefab;                // prefab that is instanstiated when the plane dies
     private AudioSource ExplosionAudio;               // Audio for plane explosion
     private ParticleSystem ExplosionParticles;        // The particle system tfor plane explosion
     public GameObject plane;
+
 
     public bool isDead;                               // Whether the player is dead.
     bool damaged;                                     // True when the player gets damaged.
@@ -45,6 +51,9 @@ public class PlaneHealth : MonoBehaviour {
 
     private void Start()
     {
+        player1 = GetComponent<Player>().player1;
+        player2 = GetComponent<Player>().player2;
+
         //Spawnpoint for player 1 and 2
         spawnPoint1 = GameObject.Find("Spawnpoint1");
         spawnPoint2 = GameObject.Find("Spawnpoint2");
@@ -54,6 +63,7 @@ public class PlaneHealth : MonoBehaviour {
         // playerAudio = GetComponent<AudioSource>();
         planeController = GetComponent<PlaneController>();
         weaponManager = GetComponentInChildren<WeaponManager>();
+        scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
 
         // Instantiate the explosion prefab and get a reference to the particle system on it.
         ExplosionParticles = Instantiate(ExplosionPrefab).GetComponent<ParticleSystem>();
@@ -112,8 +122,15 @@ public class PlaneHealth : MonoBehaviour {
             // ... it should die.
             Death();
 
-            //Add score to other player. Atm has only score system for player 1. p2 score needed later
-            GetComponent<Player>().P1AddScore(50);
+            //Add score to other player.
+            if (player1)
+            { 
+                scoreManager.AddScoreP2(50);
+            }
+            else if (player2)
+            {
+                scoreManager.AddScoreP1(50);
+            }
         }
 
     }
@@ -121,6 +138,9 @@ public class PlaneHealth : MonoBehaviour {
     //Add health to the plane. Repairing speed calculated in Base.cs
     public void Repair()
     {
+        if (isDead)
+            return;
+
         if (currentHealth < startingHealth)
         {
             currentHealth++;
@@ -184,10 +204,20 @@ public class PlaneHealth : MonoBehaviour {
         //{
         // Disable physic effects so plane will respawn correctly
         GetComponent<Rigidbody>().isKinematic = true;
-        
+
         // Set the player’s position to the chosen spawn point and reset rotation
-        transform.rotation = spawnPoint1.transform.rotation;
-        transform.position = spawnPoint1.transform.position;
+        if (player1)
+        {
+            transform.rotation = spawnPoint1.transform.rotation;
+            transform.position = spawnPoint1.transform.position;
+
+        }
+        else
+        {
+            transform.rotation = spawnPoint2.transform.rotation;
+            transform.position = spawnPoint2.transform.position;
+        }
+
 
         //reset explosion to false again
         ExplosionParticles.gameObject.SetActive(false);
@@ -195,10 +225,14 @@ public class PlaneHealth : MonoBehaviour {
         //Reset movement
         planeController.movementSpeed = 0;
         planeController.enginePower = 0;
-        
+        planeController.SetDirections();
+
         //Enable physics and weapons
         GetComponent<Rigidbody>().isKinematic = false;
         weaponManager.enabled = true;
+        weaponManager.bullets = weaponManager.maxBullets;
+        weaponManager.bombAmount = weaponManager.maxBombs;
+        weaponManager.reloading = false;
 
         //Reset health and fuel when respawning
         currentHealth = startingHealth;
@@ -212,20 +246,66 @@ public class PlaneHealth : MonoBehaviour {
             return;
 
         //If colliding with other player or ground
-        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Ground")
+        if (collision.gameObject.tag == "Player") 
         {
-            //Destroy enemy
+
             var enemyHealth = collision.gameObject.GetComponent<PlaneHealth>();
             if (enemyHealth != null)
             {
+                //Destroy enemy
                 enemyHealth.Death();
+
+                //Destroy yourself
+                Death();
             }
+        }
 
-            //Suicide removes some score
-            GetComponent<Player>().P1SubScore(50);
-
-            //Destroy yourself
+        if(collision.gameObject.tag == "Ground")
+        {
+            Suicide(40);
             Death();
+        }
+    }
+
+    //Suicide removes some score
+    void Suicide(int subScore)
+    {
+        if (isDead)
+            return;
+
+        if (player1)
+            scoreManager.SubScoreP1(subScore);
+
+        else if (player2)
+            scoreManager.SubScoreP2(subScore);
+    }
+
+    //Parameters are the player that dropped the bomb. Player one or Player two
+    public void BombKill(bool one, bool two)
+    {
+        if (isDead)
+            return;
+
+        //Bomb dropped by player 1
+        if (one)
+        {
+            //Bomb hits player 2 -> add score to player 1
+            if (player2)
+                scoreManager.AddScoreP1(100);
+
+            //Bomb hits player 1 -> subtract score from player 1
+            else if (player1)
+                Suicide(20);
+        }
+       
+        //Bomb dropped by player 2
+        else if (two)
+        {
+            if (player1)
+                scoreManager.AddScoreP2(100);
+
+            else if (player2)
+                Suicide(20);
         }
     }
 
