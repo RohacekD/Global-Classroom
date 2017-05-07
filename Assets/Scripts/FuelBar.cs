@@ -51,6 +51,9 @@ public class FuelBar : MonoBehaviour
 
     public void AddFuel()
     {
+        if (m_Dead)
+            return;
+
         if (m_CurrentFuel < m_StartingFuel)
         {
             m_CurrentFuel++;

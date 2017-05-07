@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class WeaponManager : MonoBehaviour
 {
+    bool player1;
+    bool player2;
 
     public GameObject bulletPrefab;
     public GameObject bombPrefab;
@@ -15,9 +17,9 @@ public class WeaponManager : MonoBehaviour
 
     public int bombAmount;
     public int maxBombs = 10;
-    private int bullets;
+    public int bullets;
     public int maxBullets = 20;
-    private bool reloading;
+    public bool reloading;
     public float reloadTime = 4.0f;
     private float reloadCounter;
 
@@ -28,6 +30,9 @@ public class WeaponManager : MonoBehaviour
 
     void Start()
     {
+        player1 = GetComponent<Player>().player1;
+        player2 = GetComponent<Player>().player2;
+
         bullets = maxBullets;
         reloadCounter = reloadTime;
         bombAmount = maxBombs;
@@ -85,6 +90,8 @@ public class WeaponManager : MonoBehaviour
             bombAmount--;
             GameObject bomb = (GameObject)Instantiate(bombPrefab, bombPosition.transform.position, bombPosition.transform.rotation);
             bomb.GetComponent<Bomb>().movementSpeed = GetComponentInParent<PlaneController>().movementSpeed;
+            bomb.GetComponent<Bomb>().Shooter(player1,player2);
+
             Destroy(bomb, 15.0f);
         }
     }
