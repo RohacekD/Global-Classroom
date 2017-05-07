@@ -10,8 +10,8 @@ public class Bullet : MonoBehaviour {
     public float movementSpeed = 200.0f;
 
     private int damage;
-    public int minDamage = 6;
-    public int maxDamage = 10;
+    public int minDamage = 18;
+    public int maxDamage = 32;
 
 	// Use this for initialization
 	void Start () {
@@ -26,18 +26,17 @@ public class Bullet : MonoBehaviour {
         transform.position = currentPos;
     }
 
-    /*
     private void OnTriggerEnter(Collider other)
     {
         var hit = other.gameObject;
-        var health = other.GetComponent<Health>();
+        var health = other.GetComponent<PlaneHealth>();
+        Debug.Log("bullet hits: " + hit);
 
-        if(health != null)
+        if (health != null)
         {
             health.TakeDamage(damage);
         }
 
         Destroy(gameObject);
     }
-    */
 }

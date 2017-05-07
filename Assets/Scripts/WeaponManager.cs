@@ -5,14 +5,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponManager : MonoBehaviour {
+public class WeaponManager : MonoBehaviour
+{
 
     public GameObject bulletPrefab;
     public GameObject bombPrefab;
     public GameObject bombPosition;
     public GameObject gunPosition;
 
-    public int bombAmount = 10;
+    public int bombAmount;
+    public int maxBombs = 10;
     private int bullets;
     public int maxBullets = 20;
     private bool reloading;
@@ -24,15 +26,15 @@ public class WeaponManager : MonoBehaviour {
     //Variable that is added every frame and compared to fireDelta
     private float shootingDelay = 0.0f;
 
-  
-    // Use this for initialization
-    void Start () {
+    void Start()
+    {
         bullets = maxBullets;
         reloadCounter = reloadTime;
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        bombAmount = maxBombs;
+    }
+
+    void Update()
+    {
 
         shootingDelay += Time.deltaTime;
 
@@ -41,7 +43,7 @@ public class WeaponManager : MonoBehaviour {
             Shoot();
             shootingDelay = 0.0f;
         }
-        
+
 
         if (Input.GetButtonDown("Fire2"))
         {
@@ -52,8 +54,6 @@ public class WeaponManager : MonoBehaviour {
         {
             reloading = true;
             reloadCounter -= Time.deltaTime;
-
-            Debug.Log(reloadCounter);
 
             if (reloadCounter <= 0)
             {
@@ -72,7 +72,7 @@ public class WeaponManager : MonoBehaviour {
         }
 
         GameObject bullet = (GameObject)Instantiate(bulletPrefab, gunPosition.transform.position, gunPosition.transform.rotation);
-        
+
         bullets--;
 
         Destroy(bullet, 6.0f);
@@ -85,17 +85,15 @@ public class WeaponManager : MonoBehaviour {
             bombAmount--;
             GameObject bomb = (GameObject)Instantiate(bombPrefab, bombPosition.transform.position, bombPosition.transform.rotation);
             bomb.GetComponent<Bomb>().movementSpeed = GetComponentInParent<PlaneController>().movementSpeed;
+            Destroy(bomb, 15.0f);
         }
-
     }
-    
+
     public void AddBombs()
     {
-
-    }
-
-    public void DisableEffects()
-    {
-        //Disable the effects while dropping boombs or shooting (sound and light)
+        if (bombAmount < maxBombs)
+        {
+            bombAmount++;
+        }
     }
 }
