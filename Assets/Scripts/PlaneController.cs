@@ -3,7 +3,6 @@
 //11.04.2017
 //
 //TODO:
-// - Add torque to turning (optional)
 // - Networking
 //
 
@@ -29,14 +28,11 @@ public class PlaneController : MonoBehaviour {
     private float dropGravityCalculation = 0; //This uses gravity
     private bool dropping = false;
 
-    // Use this for initialization
-    void Start () {
-
-    }
+    private bool playerIsInBase;    //Used to check if player is in the base
+    private Vector3 aboveGround;    //Used to keep player slightly above the groung when inside base
 
     void Update () {
         //Get current position
-
         Vector3 currentPos = transform.position;
 
         KeyboardInput();
@@ -53,10 +49,14 @@ public class PlaneController : MonoBehaviour {
         //Returns gravity value ( between -9,8 and 9,8 )
         float customGravity = CalculateGravity();
 
-        //Add gravity to current speed.
-        movementSpeed += customGravity;
+        //Disable gravity inside base
+        if (!playerIsInBase)
+        {
+            //Add gravity to current speed.
+            movementSpeed += customGravity;
+        }
 
-        if (movementSpeed < dropSpeed)
+        if (movementSpeed < dropSpeed && !playerIsInBase)
         {
             dropping = true;
         }
@@ -72,6 +72,12 @@ public class PlaneController : MonoBehaviour {
         // Plane drops down
         else
         {
+            if (playerIsInBase)
+            {
+                dropping = false;
+                movementSpeed = 0;
+                return;
+            }
             //
             //TODO: Should add dropping speed to Z-axis, can't figure out how to get the right direction
             //
@@ -87,6 +93,13 @@ public class PlaneController : MonoBehaviour {
                 dropping = false;
             }
         }
+
+        //Keep player slighty above the ground when in base
+        if (playerIsInBase && currentPos.y < aboveGround.y)
+        {
+            currentPos.y = aboveGround.y;
+        }
+
         transform.position = currentPos;
     }
 
@@ -112,6 +125,10 @@ public class PlaneController : MonoBehaviour {
     //Read Keyboard
     private void KeyboardInput()
     {
+        if (GetComponent<PlaneHealth>().isDead)
+        {
+            return;
+        }
         //Works, but an animation would make visually better
         //Spin the plane around
         if (Input.GetKeyDown("space"))
@@ -154,8 +171,8 @@ public class PlaneController : MonoBehaviour {
             {
                 if (movementSpeed > 0)
                 {
-                    enginePower -= addEnginePower * Time.deltaTime;
-                    movementSpeed -= addEnginePower * Time.deltaTime;
+                    enginePower -= addEnginePower * 1.5f * Time.deltaTime;
+                    movementSpeed -= addEnginePower * 1.5f * Time.deltaTime;
                 }
             }
         }
@@ -174,10 +191,27 @@ public class PlaneController : MonoBehaviour {
             {
                 if (movementSpeed > 0)
                 {
-                    enginePower -= addEnginePower * Time.deltaTime;
-                    movementSpeed -= addEnginePower * Time.deltaTime;
+                    enginePower -= addEnginePower * 1.5f * Time.deltaTime;
+                    movementSpeed -= addEnginePower * 1.5f * Time.deltaTime;
                 }
             }
+        }
+    }
+
+    //Called when player enters or exits base trigger
+    public void SetBaseData(bool inBase, Transform baseTriggerSize)
+    {
+        playerIsInBase = inBase;
+        if (baseTriggerSize != null)
+        {
+            //Get the size of base trigger, divide it by 2 and decrease it from the size -> you get the bottom lever of the collider
+            //+2.5 so player will stay lighty above groung
+            //-> player's center +2.5 looks like player is on ground
+            Vector3 position = baseTriggerSize.position;
+            Vector3 size = baseTriggerSize.localScale;
+            position.y -= size.y / 2;
+            position.y += 2.5f;
+            aboveGround = position;
         }
     }
 }

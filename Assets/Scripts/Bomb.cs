@@ -14,27 +14,26 @@ public class Bomb : MonoBehaviour {
         Vector3 currentPos = transform.position;
         currentPos += transform.forward * movementSpeed * Time.deltaTime;
         transform.position = currentPos;
-
     }
 
-    
     private void OnTriggerEnter(Collider other)
     {
         var hit = other.gameObject;
 
         //two bombs can't collide
-        if (hit.tag == "bomb") return;
+        if (hit.tag == "Bomb" ||
+            hit.tag == "Base") return;
 
-        /*
-        var health = other.GetComponent<Health>();
+        var health = other.GetComponent<PlaneHealth>();
 
         if (health != null)
         {
-            health.Kill();
+            health.Death();
         }
-        */
-        Debug.Log("HIT: " + hit);
-        Destroy(gameObject);
+
+        if (hit.tag != "Base")
+        {
+            Destroy(gameObject);
+        }
     }
-    
 }

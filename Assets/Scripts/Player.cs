@@ -5,25 +5,19 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
-    public float actualHealth { get; set; }
-    public float maxHealth { get; set; }
     public string playerName;
-    public WeaponManager weaponManager;
-    public int score { get; set; }
+    private WeaponManager weaponManager;
+    public int P1Score { get; set; }
     public int bombs { get; set; }
 
-    public Slider healthBar;
     public Text scoreDisplay;
     public Text nameDisplay;
     public Text playerBombs;
 
-    // Use this for initialization
     void Start () {
-        maxHealth = 100f;
-        score = 0;
-        actualHealth = maxHealth;
-        healthBar.value = calcHealth();
-        scoreDisplay.text = score.ToString();
+        weaponManager = GetComponent<WeaponManager>();
+        P1Score = 0;
+        scoreDisplay.text = P1Score.ToString();
         nameDisplay.text = playerName;
         bombs = weaponManager.bombAmount;
         updateBombsText();
@@ -43,40 +37,19 @@ public class Player : MonoBehaviour {
         }
     }
 	
-	// Update is called once per frame
 	void Update () {
-        scoreDisplay.text = score.ToString();
+        scoreDisplay.text = P1Score.ToString();
         bombs = weaponManager.bombAmount;
         updateBombsText();
     }
 
-    void addScore(int value)
+    public void P1AddScore(int value)
     {
-        score += value;
+        P1Score += value;
     }
 
-    void subScore(int value)
+    public void P1SubScore(int value)
     {
-        score -= value;
-    }
-
-    void recieveDamage(float damage)
-    {
-        actualHealth -= damage;
-
-        if (actualHealth <= 0)
-            Die();
-        healthBar.value = calcHealth();
-    }
-
-    void Die()
-    {
-        actualHealth = 0;
-        Debug.Log("Player died");
-    }
-
-    float calcHealth()
-    {
-        return actualHealth / maxHealth;
+        P1Score -= value;
     }
 }
