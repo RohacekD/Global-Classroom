@@ -42,17 +42,26 @@ public class WeaponManager : MonoBehaviour
 
     void Update()
     {
-
+        string shoot, bomb;
+        if (player1)
+        {
+            shoot = "Player 1 Shoot";
+            bomb = "Player 1 Bomb";
+        }
+        else
+        {
+            shoot = "Player 2 Shoot";
+            bomb = "Player 2 Bomb";
+        }
         shootingDelay += Time.deltaTime;
 
-        if (Input.GetButton("Fire1") && shootingDelay > fireDelta)
+        if (Input.GetButton(shoot) && shootingDelay > fireDelta)
         {
             Shoot();
             shootingDelay = 0.0f;
         }
 
-
-        if (Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown(bomb))
         {
             DropBomb();
         }
