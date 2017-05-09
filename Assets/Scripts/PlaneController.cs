@@ -154,23 +154,44 @@ public class PlaneController : MonoBehaviour {
         {
             return;
         }
+
+        string up, down, r, l, swap;
+
+        if (player1)
+        {
+            up = "P1Up";
+            down = "P1Down";
+            l = "P1Left";
+            r = "P1Right";
+            swap = "P1Swap";
+        }
+        else
+        {
+            up = "P2Up";
+            down = "P2Down";
+            l = "P2Left";
+            r = "P2Right";
+            swap = "P2Swap";
+        }
+
+    
         //Works, but an animation would make visually better
         //Spin the plane around
-        if (Input.GetKeyDown("space"))
+        if (Input.GetButtonDown(swap))
         {
             transform.Rotate(0, 0, 180);
 
             right = !right;
             left = !left;
         }
-
+        
         //Up and down rotating.
-        if (Input.GetKey("up"))
+        if (Input.GetButton(up))
         {
             transform.Rotate(-100f * Time.deltaTime, 0, 0);
         }
 
-        if (Input.GetKey("down"))
+        if (Input.GetButton(down))
         {
             transform.Rotate(100f * Time.deltaTime, 0, 0);
         }
@@ -181,7 +202,7 @@ public class PlaneController : MonoBehaviour {
             return;
         }
         //Left and right. Accelerate and slow down.
-        if (Input.GetKey("left"))
+        if (Input.GetButton(l))
         {
             if (left)
             {
@@ -202,7 +223,7 @@ public class PlaneController : MonoBehaviour {
             }
         }
 
-        if (Input.GetKey("right"))
+        if (Input.GetButton(r))
         {
             if (right)
             {
