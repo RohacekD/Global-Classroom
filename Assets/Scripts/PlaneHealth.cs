@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class PlaneHealth : MonoBehaviour {
@@ -187,6 +188,7 @@ public class PlaneHealth : MonoBehaviour {
         else
         {
             Debug.Log("GAME OVER, YOU LOST!");
+            SceneManager.LoadScene("finalScore");
         }
     }
 

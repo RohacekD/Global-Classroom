@@ -14,24 +14,28 @@ public class ScoreManager : MonoBehaviour {
     public void AddScoreP1(int add)
     {
         p1Score += add;
+        GameData.Score1 = p1Score;
         RefreshUI();
     }
 
     public void AddScoreP2(int add)
     {
         p2Score += add;
+        GameData.Score2 = p2Score;
         RefreshUI();
     }
 
     public void SubScoreP1(int sub)
     {
         p1Score -= sub;
+        GameData.Score1 = p1Score;
         RefreshUI();
     }
 
     public void SubScoreP2(int sub)
     {
         p2Score -= sub;
+        GameData.Score2 = p2Score;
         RefreshUI();
     }
 

@@ -16,7 +16,12 @@ public class Player : MonoBehaviour {
     public Text nameDisplay;
     public Text playerBombs;
 
-    void Start () {
+    void Start ()
+    {
+        if (player1)
+            playerName = GameData.Name1;
+        if (player2)
+            playerName = GameData.Name2;
         weaponManager = GetComponent<WeaponManager>();
         nameDisplay.text = playerName;
         bombs = weaponManager.bombAmount;
