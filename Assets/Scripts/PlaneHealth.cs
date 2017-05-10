@@ -174,12 +174,8 @@ public class PlaneHealth : MonoBehaviour {
         ExplosionParticles.Play();
         // Play the audio.
         ExplosionAudio.Play();
-    
-        /* 
-         * Set the audiosource to play the death clip and play it (this will stop the hurt sound from playing).
-        playerAudio.clip = deathClip;
-        playerAudio.Play ();   
-        */
+
+        Invoke("KillAnimation", 1);
 
         // Turn off shooting script of the airplane 
         weaponManager.enabled = false;
@@ -193,6 +189,12 @@ public class PlaneHealth : MonoBehaviour {
             Debug.Log("GAME OVER, YOU LOST!");
         }
     }
+
+    public void KillAnimation()
+    {
+        ExplosionParticles.gameObject.SetActive(false);
+    }
+
 
     private void RpcRespawn()
     {
@@ -214,8 +216,8 @@ public class PlaneHealth : MonoBehaviour {
             transform.position = spawnPoint2.transform.position;
         }
 
-        //reset explosion to false again
-        ExplosionParticles.gameObject.SetActive(false);
+        //Reset explosion to false again
+        //ExplosionParticles.gameObject.SetActive(false);
 
         //Reset movement
         planeController.movementSpeed = 0;
