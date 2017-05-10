@@ -55,7 +55,7 @@ public class LevelManager : MonoBehaviour {
     public void playSinglePlayer()
     {
         //EditorUtility.DisplayDialog("Missing scene on GIT", "Once we have scene to load place here", "OK");
-        //Application.LoadLevel("Scene");
+        Application.LoadLevel("Singleplayer");
     }
 
     public void playMultiPlayer()
